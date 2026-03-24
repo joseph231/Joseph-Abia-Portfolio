@@ -1,0 +1,10 @@
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "About",
+  description: "Learn more about Joseph Abia — Network Architect, Web Developer and Cybersecurity Analyst.",
+};
+
+export default function AboutLayout({ children }: { children: React.ReactNode }) {
+  return <>{children}</>;
+}
