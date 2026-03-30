@@ -1,7 +1,8 @@
+import Link from 'next/link'
+
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   return (
     <>
-      {/* Admin indicator bar */}
       <div style={{
         position: "fixed",
         top: "72px",
@@ -16,33 +17,41 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         gap: "0.5rem",
       }}>
         <span style={{
-          width: "6px", height: "6px", borderRadius: "50%",
-          background: "#00D4FF", flexShrink: 0,
+          width: "6px",
+          height: "6px",
+          borderRadius: "50%",
+          background: "#00D4FF",
+          flexShrink: 0,
         }} />
+
         <span style={{
-          fontSize: "0.65rem", fontWeight: 700,
-          letterSpacing: "0.2em", textTransform: "uppercase",
+          fontSize: "0.65rem",
+          fontWeight: 700,
+          letterSpacing: "0.2em",
+          textTransform: "uppercase",
           color: "#00D4FF",
         }}>
           Admin Panel — Private
         </span>
-        <a
+
+        <Link
           href="/"
           style={{
             marginLeft: "auto",
-            fontSize: "0.65rem", fontWeight: 600,
-            letterSpacing: "0.12em", textTransform: "uppercase",
+            fontSize: "0.65rem",
+            fontWeight: 600,
+            letterSpacing: "0.12em",
+            textTransform: "uppercase",
             color: "#64748B",
           }}
         >
           ← Back to site
-        </a>
+        </Link>
       </div>
 
-      {/* Extra top padding to clear both navbar + admin bar */}
       <div style={{ paddingTop: "2.5rem" }}>
         {children}
       </div>
     </>
-  );
+  )
 }
