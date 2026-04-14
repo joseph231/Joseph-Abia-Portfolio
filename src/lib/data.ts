@@ -141,7 +141,8 @@ export const CERTIFICATIONS = [
     by:         "University of the People",
     status:     "in-progress" as const,
     year:       "2025",
-    image_url:  null,           // ← upload cert image to Supabase, paste URL here
+    image_url:  "https://vtnjwoqmdprfplkpgpmi.supabase.co/storage/v1/object/public/project-images/vulnerability-management.png",  
+    image_url1:  null,         // ← upload cert image to Supabase, paste URL here
     verify_url: "PLACEHOLDER",  // ← paste your University of the People verification link
   },
   {

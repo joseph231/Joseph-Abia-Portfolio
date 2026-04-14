@@ -1,10 +1,11 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { PERSON, SOCIALS, EXPERIENCE, CERTIFICATIONS, LEARNING } from "@/lib/data";
+import { getCourseBadges, type CourseBadge } from "@/lib/supabase";
 
-// ── DARK THEME TOKENS ─────────────────────────────────────────────────────────
 const D = {
   bg:          "#0D1117",
   bgCard:      "#161B22",
@@ -24,123 +25,68 @@ const D = {
 };
 
 export default function AboutPage() {
+  const [badges, setBadges]         = useState<CourseBadge[]>([]);
+  const [expandedCert, setExpanded] = useState<string | null>(null);
+
+  useEffect(() => {
+    getCourseBadges().then(setBadges);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <div style={{ background: D.bg, color: D.text, minHeight: "100vh" }}>
 
-      {/* ── PAGE HEADER ──────────────────────────────────────── */}
-      <section style={{
-        background: `linear-gradient(135deg, ${D.bg} 0%, #0A1628 60%, #0D1117 100%)`,
-        borderBottom: `1px solid ${D.border}`,
-        padding: "5rem 0 4rem",
-        position: "relative",
-        overflow: "hidden",
-      }}>
-        {/* Dot grid */}
-        <div aria-hidden style={{
-          position: "absolute", inset: 0,
-          backgroundImage: "radial-gradient(circle, rgba(15,82,186,0.18) 1px, transparent 1px)",
-          backgroundSize: "28px 28px",
-        }} />
-        {/* Glow */}
-        <div aria-hidden style={{
-          position: "absolute", top: "-20%", right: "0",
-          width: "500px", height: "500px",
-          background: "radial-gradient(circle, rgba(15,82,186,0.15) 0%, transparent 65%)",
-        }} />
-        <div aria-hidden style={{
-          position: "absolute", bottom: "-30%", left: "10%",
-          width: "400px", height: "400px",
-          background: "radial-gradient(circle, rgba(99,60,200,0.08) 0%, transparent 65%)",
-        }} />
-
+      {/* PAGE HEADER */}
+      <section style={{ background: `linear-gradient(135deg, ${D.bg} 0%, #0A1628 60%, #0D1117 100%)`, borderBottom: `1px solid ${D.border}`, padding: "5rem 0 4rem", position: "relative", overflow: "hidden" }}>
+        <div aria-hidden style={{ position: "absolute", inset: 0, backgroundImage: "radial-gradient(circle, rgba(15,82,186,0.18) 1px, transparent 1px)", backgroundSize: "28px 28px" }} />
+        <div aria-hidden style={{ position: "absolute", top: "-20%", right: "0", width: "500px", height: "500px", background: "radial-gradient(circle, rgba(15,82,186,0.15) 0%, transparent 65%)" }} />
         <div className="site-wrap" style={{ position: "relative", zIndex: 1 }}>
-          <p style={{ fontSize: "0.68rem", fontWeight: 600, letterSpacing: "0.28em", textTransform: "uppercase", color: D.blue, marginBottom: "0.75rem" }}>
-            About Me
-          </p>
+          <p style={{ fontSize: "0.68rem", fontWeight: 600, letterSpacing: "0.28em", textTransform: "uppercase", color: D.blue, marginBottom: "0.75rem" }}>About Me</p>
           <h1 style={{ fontFamily: "var(--font-display)", fontWeight: 800, fontSize: "clamp(2rem, 5vw, 3.5rem)", color: D.text, letterSpacing: "-0.02em", lineHeight: 1.1, marginBottom: "1rem" }}>
             The person behind<br />the work
           </h1>
           <div style={{ width: "2.5rem", height: "3px", background: D.blue, borderRadius: "2px", margin: "0 0 1.25rem" }} />
           <p style={{ fontSize: "0.925rem", color: D.textMuted, maxWidth: "500px", lineHeight: 1.8, fontWeight: 300 }}>
-            A multi-disciplinary tech professional based in Nigeria, building resilient networks,
-            modern web applications, and securing digital infrastructure.
+            A multi-disciplinary tech professional based in Nigeria, building resilient networks, modern web applications, and securing digital infrastructure.
           </p>
         </div>
       </section>
 
-      {/* ── BIO + DETAILS ────────────────────────────────────── */}
+      {/* BIO + DETAILS */}
       <section style={{ padding: "5rem 0" }}>
         <div className="site-wrap">
           <div style={{ display: "grid", gridTemplateColumns: "260px 1fr", gap: "5rem", alignItems: "start" }} className="about-grid">
 
             {/* LEFT COLUMN */}
             <div>
-              {/* Avatar / Photo */}
-              <div style={{
-                width: "100%", aspectRatio: "3/4",
-                background: `linear-gradient(155deg, #0A1628 0%, ${D.blue} 100%)`,
-                borderRadius: "4px",
-                border: `1px solid ${D.border}`,
-                display: "flex", alignItems: "center", justifyContent: "center",
-                fontFamily: "var(--font-display)", fontSize: "4.5rem", fontWeight: 800,
-                color: "rgba(255,255,255,0.85)", letterSpacing: "-0.03em",
-                position: "relative", overflow: "hidden", marginBottom: "1.5rem",
-              }}>
-                <div aria-hidden style={{
-                  position: "absolute", inset: 0,
-                  backgroundImage: "radial-gradient(circle, rgba(255,255,255,0.05) 1px, transparent 1px)",
-                  backgroundSize: "18px 18px",
-                }} />
-                {/* Swap the block below for <Image> when you have a photo */}
+              <div style={{ width: "100%", aspectRatio: "3/4", background: `linear-gradient(155deg, #0A1628 0%, ${D.blue} 100%)`, borderRadius: "4px", border: `1px solid ${D.border}`, display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "var(--font-display)", fontSize: "4.5rem", fontWeight: 800, color: "rgba(255,255,255,0.85)", letterSpacing: "-0.03em", position: "relative", overflow: "hidden", marginBottom: "1.5rem" }}>
+                <div aria-hidden style={{ position: "absolute", inset: 0, backgroundImage: "radial-gradient(circle, rgba(255,255,255,0.05) 1px, transparent 1px)", backgroundSize: "18px 18px" }} />
                 <span style={{ position: "relative", zIndex: 1 }}>JA</span>
-                <div style={{
-                  position: "absolute", bottom: 0, left: 0, right: 0,
-                  padding: "1.25rem 1rem 1rem",
-                  background: "linear-gradient(to top, rgba(0,0,0,0.75), transparent)",
-                }}>
-                  <p style={{ fontSize: "0.65rem", letterSpacing: "0.2em", textTransform: "uppercase", color: "rgba(255,255,255,0.6)", fontFamily: "var(--font-body)", textAlign: "center" }}>
-                    Network Architect
-                  </p>
+                <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, padding: "1.25rem 1rem 1rem", background: "linear-gradient(to top, rgba(0,0,0,0.75), transparent)" }}>
+                  <p style={{ fontSize: "0.65rem", letterSpacing: "0.2em", textTransform: "uppercase", color: "rgba(255,255,255,0.6)", fontFamily: "var(--font-body)", textAlign: "center" }}>Network Architect</p>
                 </div>
               </div>
 
-              {/* Availability */}
-              <div style={{
-                display: "inline-flex", alignItems: "center", gap: "0.5rem",
-                padding: "0.5rem 1rem",
-                background: D.successBg, border: `1px solid ${D.success}33`,
-                borderRadius: "100px", marginBottom: "1.5rem",
-              }}>
+              <div style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", padding: "0.5rem 1rem", background: D.successBg, border: `1px solid ${D.success}33`, borderRadius: "100px", marginBottom: "1.5rem" }}>
                 <span style={{ width: "7px", height: "7px", borderRadius: "50%", background: "#3FB950", animation: "pulse-dot 2s ease-in-out infinite", flexShrink: 0 }} />
-                <span style={{ fontSize: "0.68rem", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", color: "#3FB950" }}>
-                  Available for work
-                </span>
+                <span style={{ fontSize: "0.68rem", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", color: "#3FB950" }}>Available for work</span>
               </div>
 
-              {/* Quick details */}
               <div style={{ marginBottom: "1.75rem" }}>
                 {[
-                  { label: "Location",     value: "Nigeria"             },
-                  { label: "Availability", value: "Remote · Worldwide"  },
-                  { label: "Email",        value: PERSON.email          },
-                  { label: "Experience",   value: "5+ Years"            },
-                  { label: "Languages",    value: "English"             },
+                  { label: "Location",     value: "Nigeria"            },
+                  { label: "Availability", value: "Remote · Worldwide" },
+                  { label: "Email",        value: PERSON.email         },
+                  { label: "Experience",   value: "5+ Years"           },
+                  { label: "Languages",    value: "English"            },
                 ].map((item) => (
-                  <div key={item.label} style={{
-                    display: "flex", justifyContent: "space-between", alignItems: "flex-start",
-                    padding: "0.75rem 0", borderBottom: `1px solid ${D.border}`, gap: "1rem",
-                  }}>
-                    <span style={{ fontSize: "0.68rem", fontWeight: 500, letterSpacing: "0.1em", textTransform: "uppercase", color: D.textDim, flexShrink: 0 }}>
-                      {item.label}
-                    </span>
-                    <span style={{ fontSize: "0.82rem", color: D.text, fontWeight: 500, textAlign: "right" }}>
-                      {item.value}
-                    </span>
+                  <div key={item.label} style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", padding: "0.75rem 0", borderBottom: `1px solid ${D.border}`, gap: "1rem" }}>
+                    <span style={{ fontSize: "0.68rem", fontWeight: 500, letterSpacing: "0.1em", textTransform: "uppercase", color: D.textDim, flexShrink: 0 }}>{item.label}</span>
+                    <span style={{ fontSize: "0.82rem", color: D.text, fontWeight: 500, textAlign: "right" }}>{item.value}</span>
                   </div>
                 ))}
               </div>
 
-              {/* Socials */}
               <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap" }}>
                 {[
                   { href: SOCIALS.linkedin,  label: "LinkedIn",  icon: <LinkedInIcon />  },
@@ -149,11 +95,7 @@ export default function AboutPage() {
                   { href: SOCIALS.whatsapp,  label: "WhatsApp",  icon: <WhatsAppIcon />  },
                 ].map((s) => (
                   <a key={s.label} href={s.href} target="_blank" rel="noopener noreferrer" aria-label={s.label}
-                    style={{
-                      width: "38px", height: "38px", display: "flex", alignItems: "center", justifyContent: "center",
-                      border: `1px solid ${D.border}`, borderRadius: "6px", color: D.textMuted,
-                      background: D.bgCard, transition: "all 0.2s",
-                    }}
+                    style={{ width: "38px", height: "38px", display: "flex", alignItems: "center", justifyContent: "center", border: `1px solid ${D.border}`, borderRadius: "6px", color: D.textMuted, background: D.bgCard, transition: "all 0.2s" }}
                     onMouseEnter={(e) => { e.currentTarget.style.borderColor = D.blue; e.currentTarget.style.color = D.blue; e.currentTarget.style.background = D.blueLight; }}
                     onMouseLeave={(e) => { e.currentTarget.style.borderColor = D.border; e.currentTarget.style.color = D.textMuted; e.currentTarget.style.background = D.bgCard; }}
                   >
@@ -165,59 +107,42 @@ export default function AboutPage() {
 
             {/* RIGHT COLUMN */}
             <div>
-              {/* Bio */}
               <div style={{ marginBottom: "3rem" }}>
-                <p style={{ fontSize: "0.68rem", fontWeight: 600, letterSpacing: "0.28em", textTransform: "uppercase", color: D.blue, marginBottom: "0.75rem" }}>
-                  Background
-                </p>
+                <p style={{ fontSize: "0.68rem", fontWeight: 600, letterSpacing: "0.28em", textTransform: "uppercase", color: D.blue, marginBottom: "0.75rem" }}>Background</p>
                 <h2 style={{ fontFamily: "var(--font-display)", fontWeight: 700, fontSize: "1.5rem", color: D.text, marginBottom: "1.25rem", letterSpacing: "-0.01em", lineHeight: 1.3 }}>
                   Building infrastructure that works,<br />applications that last.
                 </h2>
                 <div style={{ width: "2.5rem", height: "3px", background: D.blue, borderRadius: "2px", marginBottom: "1.5rem" }} />
-
                 {[
                   `I'm Joseph Abia — a Network Architect, Engineer and Web Developer based in Nigeria with over 5 years of hands-on experience designing enterprise networks, deploying IT infrastructure, and building full-stack web applications.`,
                   `My journey started with networking — configuring Cisco routers, designing OSPF topologies and managing enterprise LANs. Over time I expanded into web development, delivering production-grade applications using Next.js, Supabase and TypeScript.`,
                   `I'm currently completing the IBM Cybersecurity Analyst Professional Certificate, adding threat detection, SIEM analysis and vulnerability assessment to my toolkit. My goal is to be a complete infrastructure professional — building it, running it, and securing it.`,
                 ].map((para, i) => (
-                  <p key={i} style={{ fontSize: "0.925rem", color: D.textMuted, lineHeight: 1.9, marginBottom: "1rem", fontWeight: 300 }}>
-                    {para}
-                  </p>
+                  <p key={i} style={{ fontSize: "0.925rem", color: D.textMuted, lineHeight: 1.9, marginBottom: "1rem", fontWeight: 300 }}>{para}</p>
                 ))}
               </div>
 
-              {/* Strengths */}
               <div style={{ marginBottom: "3rem" }}>
-                <p style={{ fontSize: "0.68rem", fontWeight: 600, letterSpacing: "0.28em", textTransform: "uppercase", color: D.blue, marginBottom: "1.25rem" }}>
-                  What sets me apart
-                </p>
+                <p style={{ fontSize: "0.68rem", fontWeight: 600, letterSpacing: "0.28em", textTransform: "uppercase", color: D.blue, marginBottom: "1.25rem" }}>What sets me apart</p>
                 <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }} className="strengths-grid">
                   {STRENGTHS.map((s) => (
-                    <div key={s.title} style={{
-                      padding: "1.5rem", background: D.bgCard,
-                      border: `1px solid ${D.border}`, borderRadius: "4px", transition: "all 0.2s",
-                    }}
+                    <div key={s.title} style={{ padding: "1.5rem", background: D.bgCard, border: `1px solid ${D.border}`, borderRadius: "4px", transition: "all 0.2s" }}
                       onMouseEnter={(e) => { (e.currentTarget as HTMLDivElement).style.borderColor = D.blueBorder; (e.currentTarget as HTMLDivElement).style.background = D.bgCardHover; }}
                       onMouseLeave={(e) => { (e.currentTarget as HTMLDivElement).style.borderColor = D.border; (e.currentTarget as HTMLDivElement).style.background = D.bgCard; }}
                     >
                       <div style={{ fontSize: "1.5rem", marginBottom: "0.75rem" }}>{s.icon}</div>
-                      <h4 style={{ fontFamily: "var(--font-display)", fontWeight: 700, fontSize: "0.9rem", color: D.text, marginBottom: "0.5rem" }}>
-                        {s.title}
-                      </h4>
-                      <p style={{ fontSize: "0.82rem", color: D.textMuted, lineHeight: 1.7, fontWeight: 300 }}>
-                        {s.desc}
-                      </p>
+                      <h4 style={{ fontFamily: "var(--font-display)", fontWeight: 700, fontSize: "0.9rem", color: D.text, marginBottom: "0.5rem" }}>{s.title}</h4>
+                      <p style={{ fontSize: "0.82rem", color: D.textMuted, lineHeight: 1.7, fontWeight: 300 }}>{s.desc}</p>
                     </div>
                   ))}
                 </div>
               </div>
 
-              {/* CTAs */}
               <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap" }}>
-                <Link href="/projects" style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", background: D.blue, color: "white", fontFamily: "var(--font-body)", fontSize: "0.72rem", fontWeight: 500, letterSpacing: "0.15em", textTransform: "uppercase", padding: "0.875rem 2rem", borderRadius: "2px", transition: "opacity 0.2s" }}>
+                <Link href="/projects" style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", background: D.blue, color: "white", fontFamily: "var(--font-body)", fontSize: "0.72rem", fontWeight: 500, letterSpacing: "0.15em", textTransform: "uppercase", padding: "0.875rem 2rem", borderRadius: "2px" }}>
                   See My Projects <ArrowIcon />
                 </Link>
-                <a href="/resume.pdf" target="_blank" rel="noopener noreferrer" style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", background: "transparent", color: D.text, fontFamily: "var(--font-body)", fontSize: "0.72rem", fontWeight: 500, letterSpacing: "0.15em", textTransform: "uppercase", padding: "0.875rem 2rem", border: `1.5px solid ${D.border}`, borderRadius: "2px", transition: "all 0.2s" }}>
+                <a href="/resume.pdf" target="_blank" rel="noopener noreferrer" style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", background: "transparent", color: D.text, fontFamily: "var(--font-body)", fontSize: "0.72rem", fontWeight: 500, letterSpacing: "0.15em", textTransform: "uppercase", padding: "0.875rem 2rem", border: `1.5px solid ${D.border}`, borderRadius: "2px" }}>
                   Download CV <DownloadIcon />
                 </a>
               </div>
@@ -226,7 +151,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* ── EXPERIENCE ───────────────────────────────────────── */}
+      {/* EXPERIENCE */}
       <section style={{ padding: "5rem 0", background: D.bgCard, borderTop: `1px solid ${D.border}`, borderBottom: `1px solid ${D.border}` }}>
         <div className="site-wrap">
           <div style={{ marginBottom: "3rem" }}>
@@ -234,29 +159,17 @@ export default function AboutPage() {
             <h2 style={{ fontFamily: "var(--font-display)", fontWeight: 800, fontSize: "clamp(1.5rem, 3vw, 2.25rem)", color: D.text, letterSpacing: "-0.02em" }}>Work history</h2>
             <div style={{ width: "2.5rem", height: "3px", background: D.blue, borderRadius: "2px", marginTop: "1rem" }} />
           </div>
-
           <div style={{ display: "flex", flexDirection: "column" }}>
             {EXPERIENCE.map((exp, i) => (
-              <div key={i} style={{
-                display: "grid", gridTemplateColumns: "200px 1fr", gap: "3rem",
-                padding: "2.5rem 0",
-                borderBottom: i < EXPERIENCE.length - 1 ? `1px solid ${D.border}` : "none",
-              }} className="exp-row">
+              <div key={i} style={{ display: "grid", gridTemplateColumns: "200px 1fr", gap: "3rem", padding: "2.5rem 0", borderBottom: i < EXPERIENCE.length - 1 ? `1px solid ${D.border}` : "none" }} className="exp-row">
                 <div>
-                  <span style={{
-                    display: "inline-block", fontSize: "0.7rem", fontWeight: 600,
-                    letterSpacing: "0.08em", color: D.blue,
-                    padding: "0.3rem 0.75rem", background: D.blueLight,
-                    border: `1px solid ${D.blueBorder}`, borderRadius: "100px", marginBottom: "0.625rem",
-                  }}>
+                  <span style={{ display: "inline-block", fontSize: "0.7rem", fontWeight: 600, letterSpacing: "0.08em", color: D.blue, padding: "0.3rem 0.75rem", background: D.blueLight, border: `1px solid ${D.blueBorder}`, borderRadius: "100px", marginBottom: "0.625rem" }}>
                     {exp.period}
                   </span>
                   <p style={{ fontSize: "0.82rem", color: D.textDim, fontWeight: 500 }}>{exp.org}</p>
                 </div>
                 <div>
-                  <h3 style={{ fontFamily: "var(--font-display)", fontWeight: 700, fontSize: "1.1rem", color: D.text, marginBottom: "1rem", letterSpacing: "-0.01em" }}>
-                    {exp.role}
-                  </h3>
+                  <h3 style={{ fontFamily: "var(--font-display)", fontWeight: 700, fontSize: "1.1rem", color: D.text, marginBottom: "1rem", letterSpacing: "-0.01em" }}>{exp.role}</h3>
                   <ul style={{ display: "flex", flexDirection: "column", gap: "0.625rem", listStyle: "none" }}>
                     {exp.points.map((point, j) => (
                       <li key={j} style={{ display: "flex", gap: "0.75rem", fontSize: "0.875rem", color: D.textMuted, lineHeight: 1.7, fontWeight: 300 }}>
@@ -272,211 +185,143 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* ── CERTIFICATIONS ───────────────────────────────────── */}
+      {/* CERTIFICATIONS */}
       <section style={{ padding: "5rem 0" }}>
         <div className="site-wrap">
           <div style={{ marginBottom: "3rem" }}>
             <p style={{ fontSize: "0.68rem", fontWeight: 600, letterSpacing: "0.28em", textTransform: "uppercase", color: D.blue, marginBottom: "0.75rem" }}>Credentials</p>
-            <h2 style={{ fontFamily: "var(--font-display)", fontWeight: 800, fontSize: "clamp(1.5rem, 3vw, 2.25rem)", color: D.text, letterSpacing: "-0.02em" }}>
-              Certifications
-            </h2>
+            <h2 style={{ fontFamily: "var(--font-display)", fontWeight: 800, fontSize: "clamp(1.5rem, 3vw, 2.25rem)", color: D.text, letterSpacing: "-0.02em" }}>Certifications</h2>
             <div style={{ width: "2.5rem", height: "3px", background: D.blue, borderRadius: "2px", marginTop: "1rem", marginBottom: "0.75rem" }} />
             <p style={{ fontSize: "0.875rem", color: D.textMuted, fontWeight: 300 }}>
-              Click any certificate to view the full image. Verified badges link to the issuing platform.
+              Official certifications with verifiable credentials. IBM course badges are expandable.
             </p>
           </div>
 
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "1.25rem" }} className="cert-grid">
-            {CERTIFICATIONS.map((cert) => (
-              <div key={cert.name} style={{
-                background: D.bgCard, border: `1px solid ${D.border}`,
-                borderRadius: "4px", overflow: "hidden", transition: "all 0.25s",
-              }}
-                onMouseEnter={(e) => { (e.currentTarget as HTMLDivElement).style.borderColor = D.blueBorder; (e.currentTarget as HTMLDivElement).style.transform = "translateY(-2px)"; }}
-                onMouseLeave={(e) => { (e.currentTarget as HTMLDivElement).style.borderColor = D.border; (e.currentTarget as HTMLDivElement).style.transform = "translateY(0)"; }}
-              >
-                {/* Certificate image area */}
-                <div style={{
-                  width: "100%", aspectRatio: "16/9",
-                  background: `linear-gradient(135deg, #0A1628 0%, #0F52BA22 100%)`,
-                  display: "flex", alignItems: "center", justifyContent: "center",
-                  position: "relative", overflow: "hidden",
-                  borderBottom: `1px solid ${D.border}`,
-                }}>
-                  {cert.image_url ? (
-                    <Image
-                      src={cert.image_url}
-                      alt={`${cert.name} certificate`}
-                      fill
-                      style={{ objectFit: "cover" }}
-                    />
-                  ) : (
-                    <div style={{ textAlign: "center" }}>
-                      <div style={{ fontSize: "2.5rem", marginBottom: "0.5rem" }}>🎓</div>
-                      <p style={{ fontSize: "0.65rem", letterSpacing: "0.15em", textTransform: "uppercase", color: D.textDim }}>
-                        Certificate image coming soon
+          <div style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
+            {CERTIFICATIONS.map((cert) => {
+              const isIBM      = cert.name.includes("IBM");
+              const certBadges = isIBM ? badges : [];
+              const isExpanded = expandedCert === cert.name;
+
+              return (
+                <div key={cert.name} style={{ background: D.bgCard, border: `1px solid ${isExpanded ? D.blueBorder : D.border}`, borderRadius: "4px", overflow: "hidden", transition: "border-color 0.25s" }}>
+                  <div style={{ padding: "1.75rem", display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: "1rem", flexWrap: "wrap" }}>
+                    <div style={{ flex: 1 }}>
+                      <p style={{ fontFamily: "var(--font-display)", fontWeight: 700, fontSize: "0.95rem", color: D.text, marginBottom: "0.3rem", lineHeight: 1.4 }}>{cert.name}</p>
+                      <p style={{ fontSize: "0.78rem", color: D.textDim, marginBottom: "0.375rem" }}>{cert.by} · {cert.year}</p>
+                      {isIBM && certBadges.length > 0 && (
+                        <p style={{ fontSize: "0.72rem", color: D.blue, fontWeight: 500 }}>🏅 {certBadges.length} course badge{certBadges.length !== 1 ? "s" : ""} completed</p>
+                      )}
+                    </div>
+
+                    <div style={{ display: "flex", alignItems: "center", gap: "0.625rem", flexShrink: 0, flexWrap: "wrap" }}>
+                      <span style={{ fontSize: "0.65rem", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", padding: "0.25rem 0.75rem", borderRadius: "100px", background: cert.status === "completed" ? D.successBg : D.warningBg, color: cert.status === "completed" ? "#3FB950" : "#D29922", border: `1px solid ${cert.status === "completed" ? "#23863633" : "#9E6A0333"}` }}>
+                        {cert.status === "completed" ? "✓ Completed" : "⏳ In Progress"}
+                      </span>
+                      {cert.image_url && (
+                        <a href={cert.image_url} target="_blank" rel="noopener noreferrer" style={{ display: "inline-flex", alignItems: "center", gap: "0.3rem", fontSize: "0.68rem", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", color: D.blue, padding: "0.3rem 0.75rem", background: D.blueLight, border: `1px solid ${D.blueBorder}`, borderRadius: "2px" }}>
+                          <ImageIcon /> View
+                        </a>
+                      )}
+                      {cert.verify_url && cert.verify_url !== "PLACEHOLDER" && (
+                        <a href={cert.verify_url} target="_blank" rel="noopener noreferrer" style={{ display: "inline-flex", alignItems: "center", gap: "0.3rem", fontSize: "0.68rem", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", color: D.textMuted, padding: "0.3rem 0.75rem", background: "transparent", border: `1px solid ${D.border}`, borderRadius: "2px" }}>
+                          <ExternalIcon /> Verify
+                        </a>
+                      )}
+                      {isIBM && (
+                        <button
+                          onClick={() => setExpanded(isExpanded ? null : cert.name)}
+                          style={{ display: "inline-flex", alignItems: "center", gap: "0.4rem", fontSize: "0.68rem", fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase", color: D.blue, background: isExpanded ? D.blueBorder : D.blueLight, border: `1px solid ${D.blueBorder}`, borderRadius: "2px", padding: "0.3rem 0.875rem", cursor: "pointer" }}
+                        >
+                          {isExpanded ? "▲ Hide" : "▼ Badges"}
+                          {certBadges.length > 0 && (
+                            <span style={{ background: D.blue, color: "white", borderRadius: "100px", padding: "1px 6px", fontSize: "0.6rem" }}>{certBadges.length}</span>
+                          )}
+                        </button>
+                      )}
+                    </div>
+                  </div>
+
+                  {isIBM && isExpanded && (
+                    <div style={{ borderTop: `1px solid ${D.border}`, padding: "1.5rem 1.75rem", background: "rgba(0,0,0,0.2)" }}>
+                      <p style={{ fontSize: "0.65rem", fontWeight: 600, letterSpacing: "0.2em", textTransform: "uppercase", color: D.textDim, marginBottom: "1rem" }}>
+                        IBM / Credly Course Completion Badges
                       </p>
+                      {certBadges.length === 0 ? (
+                        <p style={{ fontSize: "0.82rem", color: D.textDim, fontStyle: "italic" }}>No badges added yet — add them via the admin panel.</p>
+                      ) : (
+                        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))", gap: "0.75rem" }}>
+                          {certBadges.map((badge) => (
+                            <a key={badge.id} href={badge.badge_url || "#"} target={badge.badge_url ? "_blank" : undefined} rel="noopener noreferrer"
+                              style={{ display: "flex", alignItems: "center", gap: "0.75rem", padding: "0.875rem 1rem", background: D.bg, border: `1px solid ${D.border}`, borderRadius: "4px", transition: "border-color 0.2s", textDecoration: "none" }}
+                              onMouseEnter={(e) => { if (badge.badge_url) (e.currentTarget as HTMLAnchorElement).style.borderColor = D.blueBorder; }}
+                              onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.borderColor = D.border; }}
+                            >
+                              {badge.image_url ? (
+                                <div style={{ width: "38px", height: "38px", borderRadius: "6px", overflow: "hidden", flexShrink: 0, position: "relative" }}>
+                                  <Image src={badge.image_url} alt={badge.name} fill style={{ objectFit: "cover" }} />
+                                </div>
+                              ) : (
+                                <div style={{ width: "38px", height: "38px", borderRadius: "6px", background: D.blueLight, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, fontSize: "1.25rem" }}>🏅</div>
+                              )}
+                              <div style={{ minWidth: 0 }}>
+                                <p style={{ fontSize: "0.82rem", fontWeight: 600, color: D.text, marginBottom: "0.15rem", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{badge.name}</p>
+                                <div style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}>
+                                  {badge.completed_at && <span style={{ fontSize: "0.65rem", color: "#3FB950", fontWeight: 600 }}>✓ {badge.completed_at}</span>}
+                                  {badge.badge_url && <span style={{ fontSize: "0.62rem", color: D.blue }}>Credly ↗</span>}
+                                </div>
+                              </div>
+                            </a>
+                          ))}
+                        </div>
+                      )}
                     </div>
                   )}
-
-                  {/* Status badge overlay */}
-                  <div style={{ position: "absolute", top: "0.75rem", right: "0.75rem" }}>
-                    <span style={{
-                      display: "inline-flex", alignItems: "center", gap: "0.3rem",
-                      fontSize: "0.65rem", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase",
-                      padding: "0.25rem 0.625rem", borderRadius: "100px",
-                      background: cert.status === "completed" ? D.successBg : D.warningBg,
-                      color: cert.status === "completed" ? "#3FB950" : "#D29922",
-                      border: `1px solid ${cert.status === "completed" ? "#23863633" : "#9E6A0333"}`,
-                    }}>
-                      {cert.status === "completed" ? "✓ Completed" : "⏳ In Progress"}
-                    </span>
-                  </div>
                 </div>
-
-                {/* Card body */}
-                <div style={{ padding: "1.5rem" }}>
-                  <h3 style={{ fontFamily: "var(--font-display)", fontWeight: 700, fontSize: "0.95rem", color: D.text, marginBottom: "0.375rem", lineHeight: 1.4 }}>
-                    {cert.name}
-                  </h3>
-                  <p style={{ fontSize: "0.78rem", color: D.textDim, marginBottom: "1.25rem" }}>
-                    {cert.by} · {cert.year}
-                  </p>
-
-                  {/* Actions */}
-                  <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap" }}>
-                    {cert.image_url && (
-                      <a href={cert.image_url} target="_blank" rel="noopener noreferrer" style={{
-                        display: "inline-flex", alignItems: "center", gap: "0.4rem",
-                        fontSize: "0.68rem", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase",
-                        color: D.blue, padding: "0.4rem 0.875rem",
-                        background: D.blueLight, border: `1px solid ${D.blueBorder}`, borderRadius: "2px",
-                        transition: "opacity 0.2s",
-                      }}>
-                        <ImageIcon /> View Certificate
-                      </a>
-                    )}
-                    {cert.verify_url && (
-                      <a href={cert.verify_url} target="_blank" rel="noopener noreferrer" style={{
-                        display: "inline-flex", alignItems: "center", gap: "0.4rem",
-                        fontSize: "0.68rem", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase",
-                        color: D.textMuted, padding: "0.4rem 0.875rem",
-                        background: "transparent", border: `1px solid ${D.border}`, borderRadius: "2px",
-                        transition: "all 0.2s",
-                      }}>
-                        <ExternalIcon /> Verify Online
-                      </a>
-                    )}
-                    {!cert.image_url && !cert.verify_url && (
-                      <span style={{ fontSize: "0.72rem", color: D.textDim, fontStyle: "italic" }}>
-                        Verification link coming soon
-                      </span>
-                    )}
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {/* Upload note */}
-          <div style={{
-            marginTop: "2rem", padding: "1.25rem 1.5rem",
-            background: D.blueLight, border: `1px solid ${D.blueBorder}`,
-            borderRadius: "4px", display: "flex", gap: "0.75rem", alignItems: "flex-start",
-          }}>
-            <span style={{ fontSize: "1rem", flexShrink: 0 }}>💡</span>
-            <p style={{ fontSize: "0.82rem", color: D.textMuted, lineHeight: 1.7, fontWeight: 300 }}>
-              <strong style={{ color: D.text, fontWeight: 600 }}>To add your certificate images:</strong> Upload them to your Supabase <code style={{ background: "rgba(255,255,255,0.08)", padding: "0 4px", borderRadius: "3px", fontSize: "0.78rem" }}>project-images</code> bucket, then paste the public URL into <code style={{ background: "rgba(255,255,255,0.08)", padding: "0 4px", borderRadius: "3px", fontSize: "0.78rem" }}>lib/data.ts</code> under each cert&apos;s <code style={{ background: "rgba(255,255,255,0.08)", padding: "0 4px", borderRadius: "3px", fontSize: "0.78rem" }}>image_url</code> field.
-            </p>
+              );
+            })}
           </div>
         </div>
       </section>
 
-      {/* ── LEARNING & DEVELOPMENT ───────────────────────────── */}
+      {/* LEARNING & DEVELOPMENT */}
       <section style={{ padding: "5rem 0", background: D.bgCard, borderTop: `1px solid ${D.border}` }}>
         <div className="site-wrap">
           <div style={{ marginBottom: "3rem" }}>
-            <p style={{ fontSize: "0.68rem", fontWeight: 600, letterSpacing: "0.28em", textTransform: "uppercase", color: D.blue, marginBottom: "0.75rem" }}>
-              Learning & Development
-            </p>
-            <h2 style={{ fontFamily: "var(--font-display)", fontWeight: 800, fontSize: "clamp(1.5rem, 3vw, 2.25rem)", color: D.text, letterSpacing: "-0.02em" }}>
-              Self-directed expertise
-            </h2>
+            <p style={{ fontSize: "0.68rem", fontWeight: 600, letterSpacing: "0.28em", textTransform: "uppercase", color: D.blue, marginBottom: "0.75rem" }}>Learning & Development</p>
+            <h2 style={{ fontFamily: "var(--font-display)", fontWeight: 800, fontSize: "clamp(1.5rem, 3vw, 2.25rem)", color: D.text, letterSpacing: "-0.02em" }}>Self-directed expertise</h2>
             <div style={{ width: "2.5rem", height: "3px", background: D.blue, borderRadius: "2px", marginTop: "1rem", marginBottom: "0.75rem" }} />
             <p style={{ fontSize: "0.875rem", color: D.textMuted, fontWeight: 300, maxWidth: "500px", lineHeight: 1.8 }}>
-              Beyond formal certifications — skills built through disciplined self-study,
-              hands-on practice and curated learning resources.
+              Beyond formal certifications — skills built through disciplined self-study, hands-on practice and curated learning resources.
             </p>
           </div>
 
           <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "1.25rem" }} className="cert-grid">
             {LEARNING.map((item) => (
-              <div key={item.name} style={{
-                background: D.bg, border: `1px solid ${D.border}`,
-                borderRadius: "4px", overflow: "hidden", transition: "all 0.25s",
-              }}
+              <div key={item.name} style={{ background: D.bg, border: `1px solid ${D.border}`, borderRadius: "4px", overflow: "hidden", transition: "all 0.25s" }}
                 onMouseEnter={(e) => { (e.currentTarget as HTMLDivElement).style.borderColor = D.blueBorder; (e.currentTarget as HTMLDivElement).style.transform = "translateY(-2px)"; }}
                 onMouseLeave={(e) => { (e.currentTarget as HTMLDivElement).style.borderColor = D.border; (e.currentTarget as HTMLDivElement).style.transform = "translateY(0)"; }}
               >
-                {/* Top accent bar */}
                 <div style={{ height: "3px", background: `linear-gradient(90deg, ${D.blue}, rgba(15,82,186,0.3))` }} />
-
                 <div style={{ padding: "1.75rem" }}>
-                  {/* Icon + resource badge */}
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "1rem" }}>
                     <span style={{ fontSize: "2rem" }}>{item.icon}</span>
-                    <a
-                      href={item.resource_url === "PLACEHOLDER" ? "#" : item.resource_url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      style={{
-                        display: "inline-flex", alignItems: "center", gap: "0.4rem",
-                        fontSize: "0.65rem", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase",
-                        color: D.blue, padding: "0.3rem 0.75rem",
-                        background: D.blueLight, border: `1px solid ${D.blueBorder}`,
-                        borderRadius: "100px", transition: "opacity 0.2s",
-                        pointerEvents: item.resource_url === "PLACEHOLDER" ? "none" : "auto",
-                        opacity: item.resource_url === "PLACEHOLDER" ? 0.5 : 1,
-                      }}
+                    <a href={item.resource_url === "PLACEHOLDER" ? "#" : item.resource_url} target="_blank" rel="noopener noreferrer"
+                      style={{ display: "inline-flex", alignItems: "center", gap: "0.4rem", fontSize: "0.65rem", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", color: D.blue, padding: "0.3rem 0.75rem", background: D.blueLight, border: `1px solid ${D.blueBorder}`, borderRadius: "100px", pointerEvents: item.resource_url === "PLACEHOLDER" ? "none" : "auto", opacity: item.resource_url === "PLACEHOLDER" ? 0.5 : 1 }}
                     >
                       <ExternalIcon /> {item.resource}
                     </a>
                   </div>
-
-                  <h3 style={{ fontFamily: "var(--font-display)", fontWeight: 700, fontSize: "1rem", color: D.text, marginBottom: "0.625rem", letterSpacing: "-0.01em" }}>
-                    {item.name}
-                  </h3>
-                  <p style={{ fontSize: "0.845rem", color: D.textMuted, lineHeight: 1.75, fontWeight: 300, marginBottom: "1.25rem" }}>
-                    {item.description}
-                  </p>
-
-                  {/* Tags */}
+                  <h3 style={{ fontFamily: "var(--font-display)", fontWeight: 700, fontSize: "1rem", color: D.text, marginBottom: "0.625rem", letterSpacing: "-0.01em" }}>{item.name}</h3>
+                  <p style={{ fontSize: "0.845rem", color: D.textMuted, lineHeight: 1.75, fontWeight: 300, marginBottom: "1.25rem" }}>{item.description}</p>
                   <div style={{ display: "flex", flexWrap: "wrap", gap: "0.4rem" }}>
                     {item.tags.map((tag) => (
-                      <span key={tag} style={{
-                        fontSize: "0.65rem", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase",
-                        padding: "0.25rem 0.625rem", borderRadius: "100px",
-                        background: "rgba(255,255,255,0.04)", color: D.textDim,
-                        border: `1px solid ${D.border}`,
-                      }}>
-                        {tag}
-                      </span>
+                      <span key={tag} style={{ fontSize: "0.65rem", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", padding: "0.25rem 0.625rem", borderRadius: "100px", background: "rgba(255,255,255,0.04)", color: D.textDim, border: `1px solid ${D.border}` }}>{tag}</span>
                     ))}
                   </div>
-
-                  {/* Visit resource link */}
                   <div style={{ marginTop: "1.25rem", paddingTop: "1.25rem", borderTop: `1px solid ${D.border}` }}>
-                    <a
-                      href={item.resource_url === "PLACEHOLDER" ? "#" : item.resource_url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      style={{
-                        display: "inline-flex", alignItems: "center", gap: "0.5rem",
-                        fontSize: "0.72rem", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase",
-                        color: item.resource_url === "PLACEHOLDER" ? D.textDim : D.blue,
-                        transition: "gap 0.2s",
-                        pointerEvents: item.resource_url === "PLACEHOLDER" ? "none" : "auto",
-                      }}
+                    <a href={item.resource_url === "PLACEHOLDER" ? "#" : item.resource_url} target="_blank" rel="noopener noreferrer"
+                      style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", fontSize: "0.72rem", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", color: item.resource_url === "PLACEHOLDER" ? D.textDim : D.blue, pointerEvents: item.resource_url === "PLACEHOLDER" ? "none" : "auto" }}
                     >
                       {item.resource_url === "PLACEHOLDER" ? "Link coming soon" : `Visit ${item.resource}`}
                       {item.resource_url !== "PLACEHOLDER" && <ArrowIcon />}
@@ -501,7 +346,6 @@ export default function AboutPage() {
   );
 }
 
-// ── STATIC DATA ───────────────────────────────────────────────────────────────
 const STRENGTHS = [
   { icon: "🔁", title: "Cross-disciplinary thinking",  desc: "I see the full stack — from physical cables to cloud APIs. That perspective helps me solve problems others miss."        },
   { icon: "🏗️", title: "Build-first approach",         desc: "I don't just plan — I deliver. Every project comes with clean documentation and production-ready output."               },
@@ -509,7 +353,6 @@ const STRENGTHS = [
   { icon: "🔐", title: "Security awareness",           desc: "With IBM Cybersecurity training, I approach every system with a security-first mindset from day one."                   },
 ];
 
-// ── ICONS ─────────────────────────────────────────────────────────────────────
 function ArrowIcon()    { return <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>; }
 function DownloadIcon() { return <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>; }
 function ImageIcon()    { return <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>; }
